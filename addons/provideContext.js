@@ -11,39 +11,40 @@ var contextTypes = require('../lib/contextTypes');
 /**
  * Provides context prop to all children as React context
  * @method provideContext
- * @param {React.Component} Component component to wrap
  * @param {object} customContextTypes Custom contextTypes to add
- * @returns {React.Component}
+ * @returns {function} A function that accepts a React Component to wrap
  */
-module.exports = function provideContext(Component, customContextTypes) {
-    var childContextTypes = objectAssign({}, contextTypes, customContextTypes || {});
+module.exports = function provideContext(customContextTypes) {
+    return function (Component) {
+        var childContextTypes = objectAssign({}, contextTypes, customContextTypes || {});
 
-    var ContextProvider = React.createClass({
-        displayName: 'ContextProvider',
+        var ContextProvider = React.createClass({
+            displayName: 'ContextProvider',
 
-        propTypes: {
-            context: React.PropTypes.object.isRequired
-        },
+            propTypes: {
+                context: React.PropTypes.object.isRequired
+            },
 
-        childContextTypes: childContextTypes,
+            childContextTypes: childContextTypes,
 
-        getChildContext: function () {
-            var childContext = {
-                executeAction: this.props.context.executeAction,
-                getStore: this.props.context.getStore
-            };
-            if (customContextTypes) {
-                Object.keys(customContextTypes).forEach(function (key) {
-                    childContext[key] = this.props.context[key];
-                }, this);
+            getChildContext: function () {
+                var childContext = {
+                    executeAction: this.props.context.executeAction,
+                    getStore: this.props.context.getStore
+                };
+                if (customContextTypes) {
+                    Object.keys(customContextTypes).forEach(function (key) {
+                        childContext[key] = this.props.context[key];
+                    }, this);
+                }
+                return childContext;
+            },
+
+            render: function () {
+                return React.createElement(Component, this.props);
             }
-            return childContext;
-        },
+        });
 
-        render: function () {
-            return React.createElement(Component, this.props);
-        }
-    });
-
-    return ContextProvider;
+        return ContextProvider;
+    }
 };

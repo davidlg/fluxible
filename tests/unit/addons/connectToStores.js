@@ -66,7 +66,7 @@ describe('connectToStores', function () {
                 );
             }
         });
-        var WrappedComponent = provideContext(connectToStores(Component, [FooStore, BarStore], {
+        var WrappedComponent = provideContext()(connectToStores([FooStore, BarStore], {
             FooStore: function (store, props) {
                 return {
                     foo: store.getFoo()
@@ -77,7 +77,7 @@ describe('connectToStores', function () {
                     bar: store.getBar()
                 }
             }
-        }));
+        })(Component));
 
         var container = document.createElement('div');
         var component = React.render(React.createElement(WrappedComponent, {
@@ -121,13 +121,13 @@ describe('connectToStores', function () {
                 );
             }
         });
-        var WrappedComponent = provideContext(connectToStores(Component, [FooStore, BarStore], function (stores, props) {
+        var WrappedComponent = provideContext()(connectToStores([FooStore, BarStore], function (stores, props) {
             var foo = stores.FooStore.getFoo();
             var bar = stores.BarStore.getBar();
             return {
                 foobar: foo + bar
             };
-        }));
+        })(Component));
 
         var container = document.createElement('div');
         var component = React.render(React.createElement(WrappedComponent, {

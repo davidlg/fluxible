@@ -63,7 +63,7 @@ describe('FluxibleContext', function () {
                 },
                 render: function () { return null; }
             });
-            Component = provideContext(Component);
+            Component = provideContext()(Component);
             var app = new Fluxible({
                 component: Component
             });

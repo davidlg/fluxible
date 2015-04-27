@@ -25,9 +25,9 @@ describe('provideContext', function () {
                 return null;
             }
         });
-        var WrappedComponent = provideContext(Component, {
+        var WrappedComponent = provideContext({
             foo: React.PropTypes.string
-        });
+        })(Component);
 
         React.renderToString(<WrappedComponent context={context} />);
     });
