@@ -16,6 +16,10 @@ MockActionContext.prototype.getStore = function (name) {
     return this.dispatcherContext.getStore(name);
 };
 
+MockActionContext.prototype.getDomain = function(name) {
+    return this.dispatcherContext.getDomain(name);
+}
+
 MockActionContext.prototype.dispatch = function (name, payload) {
     this.dispatchCalls.push({
         name: name,
