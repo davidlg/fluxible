@@ -39,8 +39,10 @@ MockActionContext.prototype.executeAction = function (action, payload, callback)
 module.exports = function createMockActionContext(options) {
     options = options || {};
     options.stores = options.stores || [];
+    options.domains = options.domains || [];
     options.dispatcher = options.dispatcher || dispatchr.createDispatcher({
-        stores: options.stores
+        stores: options.stores,
+        domains: options.domains
     });
     options.dispatcherContext = options.dispatcherContext || options.dispatcher.createContext();
 
